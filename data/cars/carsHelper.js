@@ -4,7 +4,8 @@ module.exports = {
     find,
     getById,
     insert,
-    update
+    update, 
+    remove,
 };
 
 // find helper
@@ -38,4 +39,10 @@ function update(id, changes) {
     return db('cars')
         .where({ id })
         .update(changes);
+}
+
+function remove(id) {
+    return db('cars')
+        .where('id', id)
+        .del()
 }

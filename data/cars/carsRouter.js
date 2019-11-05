@@ -6,7 +6,7 @@ const carsDb = require('./carsHelper.js');
 
 const router = express.Router();
 
-// refactored code using helpers
+// refactored code using .find helper
 router.get('/', (req, res) => {
     const cars = req.query;
 
@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
 
 // })
 
-// refactor using insert helper
+// refactor using .insert helper
 router.post('/', (req,res) => {
     const newCar = req.body;
 
@@ -62,7 +62,7 @@ router.post('/', (req,res) => {
 //         });
 // });
 
-// refactor using getById helper
+// refactor using .getById helper
 router.get('/:id', (req, res) => {
     const {id} = req.params
 
@@ -91,7 +91,7 @@ router.get('/:id', (req, res) => {
 //         })
 // })
 
-// refactor using update helper
+// refactor using .update helper
 router.put('/:id', (req, res) => {
     const {id} = req.params;
     const changes = req.body;
@@ -121,18 +121,31 @@ router.put('/:id', (req, res) => {
 //         })
 // })
 
-// original using knex basic DELETE /:id using knex dbConfig.js
-router.delete('/:id', (req, res) => {
-    
-    knex('cars')
-        .where({ id: req.params.id })
-        .del()
-        .then(count => { // how many records/rows were deleted
-            res.status(200).json(count);
+// refactor using the .remove helper
+router.delete('/:id', (req,res) => {
+    const {id} = req.params;
+
+    carsDb.remove(id)
+        .then(count => {
+            res.status(200).json(count)
         })
         .catch(err => {
-            res.status(500).json({ error: `Failed to delete the car from the database.`})
+            res.status(500).json({ error: `Failed to delete the car information form the database.`})
         })
 })
+
+// original using knex basic DELETE /:id using knex dbConfig.js
+// router.delete('/:id', (req, res) => {
+    
+//     knex('cars')
+//         .where({ id: req.params.id })
+//         .del()
+//         .then(count => { // how many records/rows were deleted
+//             res.status(200).json(count);
+//         })
+//         .catch(err => {
+//             res.status(500).json({ error: `Failed to delete the car from the database.`})
+//         })
+// })
 
 module.exports = router;
