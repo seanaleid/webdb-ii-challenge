@@ -7,7 +7,7 @@ module.exports = {
 
 // find helper
 async function find(query = {}) {
-    const { limit = 2, sortby = 'id', sortdir = 'desc'} = query;
+    const { limit = 10, sortby = 'id', sortdir = 'desc'} = query;
 
     let rows = await db('cars')
         .orderBy(sortby, sortdir)

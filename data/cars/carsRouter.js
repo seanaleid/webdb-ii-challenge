@@ -1,7 +1,7 @@
 const express = require('express');
 
 // database access using knex
-// const knex = require('../../dbConfig.js');
+const knex = require('../../dbConfig.js');
 const carsDb = require('./carsHelper.js');
 
 const router = express.Router();
@@ -49,18 +49,18 @@ router.get('/:id', (req, res) => {
 })
 
 // original using knex basic POST / using knex dbConfig.js
-// router.post('/', (req, res) => {
+router.post('/', (req, res) => {
 
-//     knex   
-//         .insert(req.body)
-//         .into('cars')
-//         .then(id => {
-//             res.status(201).json(id);
-//         })
-//         .catch(err => {
-//             res.status(500).json({ error: `Failed to add the car to the database`});
-//         });
-// });
+    knex   
+        .insert(req.body)
+        .into('cars')
+        .then(id => {
+            res.status(201).json(id);
+        })
+        .catch(err => {
+            res.status(500).json({ error: `Failed to add the car to the database`});
+        });
+});
 
 // original using knex basic GET /:id using knex dbConfig.js
 // router.get('/:id', (req, res) => {
@@ -93,5 +93,19 @@ router.get('/:id', (req, res) => {
 //             res.status(500).json({ error: 'Failed to update the car information in the database.'})
 //         })
 // })
+
+// original using knex basic DELETE /:id using knex dbConfig.js
+router.delete('/:id', (req, res) => {
+    
+    knex('cars')
+        .where({ id: req.params.id })
+        .del()
+        .then(count => { // how many records/rows were deleted
+            res.status(200).json(count);
+        })
+        .catch(err => {
+            res.status(500).json({ error: `Failed to delete the car from the database.`})
+        })
+})
 
 module.exports = router;
