@@ -91,6 +91,20 @@ router.get('/:id', (req, res) => {
 //         })
 // })
 
+// refactor using update helper
+router.put('/:id', (req, res) => {
+    const {id} = req.params;
+    const changes = req.body;
+
+    carsDb.update(id, changes)
+        .then(count => {
+            res.status(200).json(count)
+        })
+        .catch(err => { 
+            res.status(500).json({ error: `Failed to update the car information in the database.`})
+        })
+})
+
 // original using knex basic PUT /:id using knex dbConfig.js
 // router.put('/:id', (req, res) => {
 //     const id = req.params.id;

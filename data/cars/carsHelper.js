@@ -3,7 +3,8 @@ const db = require('../../dbConfig.js');
 module.exports = {
     find,
     getById,
-    insert
+    insert,
+    update
 };
 
 // find helper
@@ -31,4 +32,10 @@ function insert(car) {
     .then(ids => {
         return getById(ids[0]);
     });
+}
+
+function update(id, changes) {
+    return db('cars')
+        .where({ id })
+        .update(changes);
 }
