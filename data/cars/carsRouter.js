@@ -35,6 +35,33 @@ router.get('/', (req, res) => {
 
 // })
 
+// refactor using insert helper
+router.post('/', (req,res) => {
+    const newCar = req.body;
+
+    carsDb.insert(newCar)
+        .then(car => {
+            res.status(201).json(car);
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'Failed to insert the car to the database.'})
+        })
+})
+
+// original using knex basic POST / using knex dbConfig.js
+// router.post('/', (req, res) => {
+
+//     knex   
+//         .insert(req.body)
+//         .into('cars')
+//         .then(id => {
+//             res.status(201).json(id);
+//         })
+//         .catch(err => {
+//             res.status(500).json({ error: `Failed to add the car to the database`});
+//         });
+// });
+
 // refactor using getById helper
 router.get('/:id', (req, res) => {
     const {id} = req.params
@@ -47,20 +74,6 @@ router.get('/:id', (req, res) => {
             res.status(500).json({ error: `There was an error retrieving the car information`})
         })
 })
-
-// original using knex basic POST / using knex dbConfig.js
-router.post('/', (req, res) => {
-
-    knex   
-        .insert(req.body)
-        .into('cars')
-        .then(id => {
-            res.status(201).json(id);
-        })
-        .catch(err => {
-            res.status(500).json({ error: `Failed to add the car to the database`});
-        });
-});
 
 // original using knex basic GET /:id using knex dbConfig.js
 // router.get('/:id', (req, res) => {

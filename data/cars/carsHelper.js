@@ -2,7 +2,8 @@ const db = require('../../dbConfig.js');
 
 module.exports = {
     find,
-    getById
+    getById,
+    insert
 };
 
 // find helper
@@ -21,4 +22,13 @@ function getById(id) {
     return db('cars')
     .where({ id })
     .first();
+}
+
+// insert helper
+function insert(car) {
+    return db('cars')
+    .insert(car)
+    .then(ids => {
+        return getById(ids[0]);
+    });
 }
